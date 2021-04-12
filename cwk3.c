@@ -81,7 +81,7 @@ int main( int argc, char **argv )
     size_t workGroupSize[1] = {nRows * nCols};
 
 
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, NULL, 0, NULL, NULL);
     if( status != CL_SUCCESS )
     {
         printf( "Failure enqueuing kernel: Error %d.\n", status );
