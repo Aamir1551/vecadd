@@ -1,6 +1,6 @@
 // Kernel for matrix transposition.
 __kernel
-void transposeMat( __global float *a, __global float *b, __global int *row_p, __global int *col_p)
+void transposeMat( __global float *a, __global float *b,  int row_p, int col_p)
 {
 	// The global id tells us the index of the vector for this thread.
 

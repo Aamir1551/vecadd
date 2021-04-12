@@ -62,60 +62,40 @@ int main( int argc, char **argv )
     //
     // Transpose the matrix on the GPU.
     //
+    // Compile the Kernel to compute the transposition on the Device
     cl_kernel kernel = compileKernelFromFile("cwk3.cl", "transposeMat", context, device);
 
+    // Create the device_mat, the one that we will be sending the host matrix to.
     cl_mem device_mat = clCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR,
                                        nRows * nCols * sizeof(float), hostMatrix, &status);
 
+    // The transposed Matrix
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nRows, &status);
-    cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nCols, &status);
+    // Send the num rows to the kernel
+    //cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nRows, &status);
 
+    // Send the num cols to the kernel
+    //cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nCols, &status);
+
+    // Setting all the kernel arguements
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
-    if( status != CL_SUCCESS )
-    {
-        printf( "arg0", status );
-        return EXIT_FAILURE;
-    }
     status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
-    if( status != CL_SUCCESS )
-    {
-        printf( "arg1", status );
-        return EXIT_FAILURE;
-    }
-    status = clSetKernelArg(kernel, 2, sizeof(cl_mem), &device_row);
-    if( status != CL_SUCCESS )
-    {
-        printf( "arg2", status );
-        return EXIT_FAILURE;
-    }
-    status = clSetKernelArg(kernel, 3, sizeof(cl_mem), &device_col);
-    if( status != CL_SUCCESS )
-    {
-        printf( "arg3", status );
-        return EXIT_FAILURE;
-    }
+    //status = clSetKernelArg(kernel, 2, sizeof(cl_mem), &device_row);
+    status = clSetKernelArg(kernel, 2, sizeof(int), &nRows);
+    //status = clSetKernelArg(kernel, 3, sizeof(cl_mem), &device_col);
+    status = clSetKernelArg(kernel, 3, sizeof(int), &nCols);
 
+    // Organising the NDRange for kernel
     size_t globalSize[1];
     globalSize[0] = nRows * nCols;
     size_t workGroupSize[1];
-    workGroupSize[0] = 1;//nRows * nCols;
+    workGroupSize[0] = 1;
 
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
 
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, NULL, 0, NULL, NULL);
-    if( status != CL_SUCCESS )
-    {
-        printf( "Failure enqueuing kernel: Error %d.\n", status );
-        return EXIT_FAILURE;
-    }
-
+    // Send the result back to the Host
     status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
-    if( status != CL_SUCCESS )
-    {
-        printf( "Could not copy device data to host: Error %d.\n", status );
-        return EXIT_FAILURE;
-    }
 
     clReleaseKernel(kernel);
 
