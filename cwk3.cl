@@ -10,8 +10,7 @@ void transposeMat( __global float *a, __global float *b, __global int *row_p, __
 	int j = get_global_id(0) % col;
 	int i = (get_global_id(0) - j) / col;
 
-	//b[j * row + i] = 1;//a[i * col + j];
-	b[0] = 1;
+	b[j * row + i] = a[i * col + j];
 
 	// Perform the addition.
 	//c[gid] = a[gid];
