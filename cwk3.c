@@ -85,7 +85,7 @@ int main( int argc, char **argv )
 
     status = clEnqueueReadBuffer(queue, device_mat, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
 
-    clReleaseDevice(kernel);
+    clReleaseKernel(kernel);
 
     // ...
 
