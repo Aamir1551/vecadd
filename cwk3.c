@@ -65,14 +65,14 @@ int main( int argc, char **argv )
     // Compile the Kernel to compute the transposition on the Device
     cl_kernel kernel = compileKernelFromFile("cwk3.cl", "transposeMat", context, device);
 
-    // Create the device_mat, the one that we will be sending the host matrix to.
+    // Allocate global memory on the GPU and pass the host matrix to this global memory
     cl_mem device_mat = clCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR,
                                        nRows * nCols * sizeof(float), hostMatrix, &status);
 
-    // The transposed Matrix
+    // The transposed Matrix. We will be returning this data
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    // Setting all the kernel arguements
+    // Setting all the kernel arguments
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
     status = clSetKernelArg(kernel, 2, sizeof(int), &nRows);
@@ -84,12 +84,16 @@ int main( int argc, char **argv )
     size_t workGroupSize[1];
     workGroupSize[0] = 1;
 
+    // queuing NDrange
     status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
 
     // Send the result back to the Host
     status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
 
+    // clear up
     clReleaseKernel(kernel);
+    clReleaseMemObject(device_mat);
+    clReleaseMemObject(device_output);
 
     // ...
 
