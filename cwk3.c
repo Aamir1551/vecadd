@@ -82,8 +82,18 @@ int main( int argc, char **argv )
 
 
     status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
+    if( status != CL_SUCCESS )
+    {
+        printf( "Failure enqueuing kernel: Error %d.\n", status );
+        return EXIT_FAILURE;
+    }
 
     status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
+    if( status != CL_SUCCESS )
+    {
+        printf( "Could not copy device data to host: Error %d.\n", status );
+        return EXIT_FAILURE;
+    }
 
     clReleaseKernel(kernel);
 
