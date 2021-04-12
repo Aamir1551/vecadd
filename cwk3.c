@@ -80,7 +80,7 @@ int main( int argc, char **argv )
     size_t globalSize[1];
     globalSize[0] = nRows * nCols;
     size_t workGroupSize[1];
-    workGroupSize[0] = 128;//nRows * nCols;
+    workGroupSize[0] = 1;//nRows * nCols;
 
 
     status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
