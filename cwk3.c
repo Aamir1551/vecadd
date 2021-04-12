@@ -72,25 +72,25 @@ int main( int argc, char **argv )
     cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nRows, &status);
     cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nCols, &status);
 
-    status = clSetKernelArg(kernel, 0, nRows * nCols * sizeof(float), &device_mat);
+    status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     if( status != CL_SUCCESS )
     {
         printf( "arg0", status );
         return EXIT_FAILURE;
     }
-    status = clSetKernelArg(kernel, 1, nRows * nCols * sizeof(float), &device_output);
+    status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
     if( status != CL_SUCCESS )
     {
         printf( "arg1", status );
         return EXIT_FAILURE;
     }
-    status = clSetKernelArg(kernel, 2, sizeof(int), &device_row);
+    status = clSetKernelArg(kernel, 2, sizeof(cl_mem), &device_row);
     if( status != CL_SUCCESS )
     {
         printf( "arg2", status );
         return EXIT_FAILURE;
     }
-    status = clSetKernelArg(kernel, 3, sizeof(int), &device_col);
+    status = clSetKernelArg(kernel, 3, sizeof(cl_mem), &device_col);
     if( status != CL_SUCCESS )
     {
         printf( "arg3", status );
