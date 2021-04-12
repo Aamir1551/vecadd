@@ -75,25 +75,25 @@ int main( int argc, char **argv )
     status = clSetKernelArg(kernel, 0, nRows * nCols * sizeof(float), &device_mat);
     if( status != CL_SUCCESS )
     {
-        printf( "arg", status );
+        printf( "arg0", status );
         return EXIT_FAILURE;
     }
     status = clSetKernelArg(kernel, 1, nRows * nCols * sizeof(float), &device_output);
     if( status != CL_SUCCESS )
     {
-        printf( "arg", status );
+        printf( "arg1", status );
         return EXIT_FAILURE;
     }
     status = clSetKernelArg(kernel, 2, sizeof(int), &device_row);
     if( status != CL_SUCCESS )
     {
-        printf( "arg", status );
+        printf( "arg2", status );
         return EXIT_FAILURE;
     }
     status = clSetKernelArg(kernel, 3, sizeof(int), &device_col);
     if( status != CL_SUCCESS )
     {
-        printf( "arg", status );
+        printf( "arg3", status );
         return EXIT_FAILURE;
     }
 
