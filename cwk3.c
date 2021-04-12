@@ -69,8 +69,8 @@ int main( int argc, char **argv )
 
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nRows, &status);
-    cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nCols, &status);
+    cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nRows, &status);
+    cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nCols, &status);
 
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     if( status != CL_SUCCESS )
