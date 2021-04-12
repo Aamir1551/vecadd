@@ -73,9 +73,29 @@ int main( int argc, char **argv )
     cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nCols, &status);
 
     status = clSetKernelArg(kernel, 0, nRows * nCols * sizeof(float), &device_mat);
+    if( status != CL_SUCCESS )
+    {
+        printf( "arg", status );
+        return EXIT_FAILURE;
+    }
     status = clSetKernelArg(kernel, 1, nRows * nCols * sizeof(float), &device_output);
+    if( status != CL_SUCCESS )
+    {
+        printf( "arg", status );
+        return EXIT_FAILURE;
+    }
     status = clSetKernelArg(kernel, 2, sizeof(int), &device_row);
+    if( status != CL_SUCCESS )
+    {
+        printf( "arg", status );
+        return EXIT_FAILURE;
+    }
     status = clSetKernelArg(kernel, 3, sizeof(int), &device_col);
+    if( status != CL_SUCCESS )
+    {
+        printf( "arg", status );
+        return EXIT_FAILURE;
+    }
 
     size_t globalSize[1];
     globalSize[0] = nRows * nCols;
@@ -83,7 +103,7 @@ int main( int argc, char **argv )
     workGroupSize[0] = 1;//nRows * nCols;
 
 
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, NULL, 0, NULL, NULL);
     if( status != CL_SUCCESS )
     {
         printf( "Failure enqueuing kernel: Error %d.\n", status );
