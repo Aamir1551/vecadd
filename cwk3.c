@@ -72,18 +72,10 @@ int main( int argc, char **argv )
     // The transposed Matrix
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    // Send the num rows to the kernel
-    //cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nRows, &status);
-
-    // Send the num cols to the kernel
-    //cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, sizeof(int), &nCols, &status);
-
     // Setting all the kernel arguements
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
-    //status = clSetKernelArg(kernel, 2, sizeof(cl_mem), &device_row);
     status = clSetKernelArg(kernel, 2, sizeof(int), &nRows);
-    //status = clSetKernelArg(kernel, 3, sizeof(cl_mem), &device_col);
     status = clSetKernelArg(kernel, 3, sizeof(int), &nCols);
 
     // Organising the NDRange for kernel
