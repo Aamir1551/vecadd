@@ -1,0 +1,6 @@
+# ninja log v5
+624	922	6387286093032693	opencl_prac.exe	5dbff164894aac28
+1	623	6387286090214783	CMakeFiles/opencl_prac.dir/vectorAddition.c.obj	bfedb4ecd59e4c90
+0	233	6387289564497735	build.ninja	3983edf689691fe3
+1	149	6387289597772611	CMakeFiles/opencl_prac.dir/vectorAddition.c.obj	251879fc62ee3a40
+150	338	6387289599318976	opencl_prac.exe	5dbff164894aac28

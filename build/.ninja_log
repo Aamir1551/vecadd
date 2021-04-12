@@ -1,0 +1,8 @@
+# ninja log v5
+0	136	6376910093758286	CMakeFiles/opencl_prac.dir/main.cpp.obj	f9cd4d61eb53fd3c
+131	312	6377094323291916	opencl_prac.exe	e68db806895e9a30
+1	341	6377139412993238	build.ninja	246ca1320610c61a
+2	130	6377094321683823	CMakeFiles/opencl_prac.dir/vectorAddition.c.obj	ce42543b015b1661
+1	276	6377139412993238	build.ninja	246ca1320610c61a
+2	133	6377139415684695	CMakeFiles/opencl_prac.dir/vectorAddition.c.obj	ce42543b015b1661
+134	305	6377139417257724	opencl_prac.exe	e68db806895e9a30

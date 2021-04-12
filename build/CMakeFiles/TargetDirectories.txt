@@ -1,0 +1,3 @@
+C:/Users/aamir/Documents/opencl_prac/build/CMakeFiles/opencl_prac.dir
+C:/Users/aamir/Documents/opencl_prac/build/CMakeFiles/edit_cache.dir
+C:/Users/aamir/Documents/opencl_prac/build/CMakeFiles/rebuild_cache.dir
