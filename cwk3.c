@@ -77,11 +77,13 @@ int main( int argc, char **argv )
     status = clSetKernelArg(kernel, 2, sizeof(int), &device_row);
     status = clSetKernelArg(kernel, 3, sizeof(int), &device_col);
 
-    size_t globalSize[1] = {nRows * nCols};
-    size_t workGroupSize[1] = {nRows * nCols};
+    size_t globalSize[1];
+    globalSize[0] = nRows * nCols;
+    size_t workGroupSize[1];
+    workGroupSize[0] = 128;//nRows * nCols;
 
 
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, NULL, 0, NULL, NULL);
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
     if( status != CL_SUCCESS )
     {
         printf( "Failure enqueuing kernel: Error %d.\n", status );
