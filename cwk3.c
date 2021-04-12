@@ -69,10 +69,17 @@ int main( int argc, char **argv )
 
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    status = clSetKernelArg(kernel, 0, nRows * nCols * sizeof(float), &device);
+    cl_mem device_row = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nRows, &status);
+    cl_mem device_col = clCreateBuffer(context, CL_MEM_READ_ONLY, sizeof(int), &nCols, &status);
 
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, indexSpaceSize, workGroupSize, 0, NULL, NULL);
+    status = clSetKernelArg(kernel, 0, nRows * nCols * sizeof(float), &device_mat);
+    status = clSetKernelArg(kernel, 1, nRows * nCols * sizeof(float), &device_output);
+    status = clSetKernelArg(kernel, 2, sizeof(int), &device_row);
+    status = clSetKernelArg(kernel, 3, sizeof(int), &device_col);
 
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, {nRows * nCols}, {nRows * nCols}, 0, NULL, NULL);
+
+    status = clEnqueueReadBuffer(queue, device_mat, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
 
     clReleaseDevice(kernel);
 
