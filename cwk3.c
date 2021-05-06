@@ -100,6 +100,8 @@ int main( int argc, char **argv )
     clReleaseMemObject(device_mat);
     clReleaseMemObject(device_output);
 
+    hostMatrix = hostMatrix2;
+
     // ...
 
 
