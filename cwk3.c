@@ -81,11 +81,9 @@ int main( int argc, char **argv )
     // Organising the NDRange for kernel
     size_t globalSize[1];
     globalSize[0] = nRows * nCols;
-    size_t workGroupSize[1];
-    workGroupSize[0] = 1;
 
     // queuing NDrange
-    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, NULL, 0, NULL, NULL);
 
     // Send the result back to the Host
     status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
