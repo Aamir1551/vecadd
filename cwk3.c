@@ -75,8 +75,8 @@ int main( int argc, char **argv )
     // Setting all the kernel arguments
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
-    status = clSetKernelArg(kernel, 2, sizeof(int), &nRows);
-    status = clSetKernelArg(kernel, 3, sizeof(int), &nCols);
+    status = clSetKernelArg(kernel, 2, sizeof(int), &nCols);
+    status = clSetKernelArg(kernel, 3, sizeof(int), &nRows);
 
     // Organising the NDRange for kernel
     size_t globalSize[2];
