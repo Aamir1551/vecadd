@@ -67,7 +67,7 @@ int main( int argc, char **argv )
     cl_mem device_a = clCreateBuffer(context,CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, matrix_mem_size, hostMatrix ,&status);
     cl_mem device_b = clCreateBuffer(context,CL_MEM_WRITE_ONLY, matrix_mem_size, NULL, &status);
 
-    cl_kernel kernel = compileKernelFromFile("cwk3.cl","transpose",context,device);
+    cl_kernel kernel = compileKernelFromFile("cwk3.cl","transposeMat",context,device);
 
 
     status = clSetKernelArg(kernel,0,sizeof(cl_mem),&device_a);
