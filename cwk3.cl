@@ -14,6 +14,6 @@ void transposeMat( __global float *a, __global float *b, int cols, int rows)
     unsigned int index_in = x_pos + cols * y_pos;
     unsigned int index_out = y_pos + rows + x_pos;
 
-    a[index_out] = b[index_in];
+    b[index_out] = a[index_in];
 
 }
