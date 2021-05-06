@@ -1,6 +1,6 @@
 // Kernel for matrix transposition.
 __kernel
-void transposeMat( __global float *a, __global float *b, int cols, int rows)
+void transposeMat( __global float *a, __global float *b, const int cols, const int rows)
 {
 
 	//int j = get_global_id(0) % col;
