@@ -72,6 +72,8 @@ int main( int argc, char **argv )
     // The transposed Matrix. We will be returning this data
     cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
+    float *hostMatrix2 = (float*) malloc( nRows * nCols * sizeof(float));
+
     // Setting all the kernel arguments
     status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
     status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
@@ -91,7 +93,7 @@ int main( int argc, char **argv )
     status = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, globalSize, NULL, 0, NULL, NULL);
 
     // Send the result back to the Host
-    status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
+    status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix2, 0, NULL, NULL);
 
     // clear up
     clReleaseKernel(kernel);
