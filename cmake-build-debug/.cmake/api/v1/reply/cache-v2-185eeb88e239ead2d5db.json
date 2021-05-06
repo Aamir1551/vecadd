@@ -103,7 +103,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/JetBrains/CLion 2020.3.1/bin/cmake/win/bin/cmake.exe"
+			"value" : "C:/Program Files/JetBrains/CLion 2020.3.4/bin/cmake/win/bin/cmake.exe"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -115,7 +115,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/JetBrains/CLion 2020.3.1/bin/cmake/win/bin/cpack.exe"
+			"value" : "C:/Program Files/JetBrains/CLion 2020.3.4/bin/cmake/win/bin/cpack.exe"
 		},
 		{
 			"name" : "CMAKE_CTEST_COMMAND",
@@ -127,7 +127,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/JetBrains/CLion 2020.3.1/bin/cmake/win/bin/ctest.exe"
+			"value" : "C:/Program Files/JetBrains/CLion 2020.3.4/bin/cmake/win/bin/ctest.exe"
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER",
@@ -1067,7 +1067,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Program Files/JetBrains/CLion 2020.3.1/bin/cmake/win/share/cmake-3.17"
+			"value" : "C:/Program Files/JetBrains/CLion 2020.3.4/bin/cmake/win/share/cmake-3.17"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
