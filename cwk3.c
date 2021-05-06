@@ -86,10 +86,10 @@ int main( int argc, char **argv )
 
     status = clEnqueueNDRangeKernel(queue,kernel,2,NULL,global_work_size,NULL,0,NULL,NULL);
 
-    clEnqueueReadBuffer(queue,device_b,CL_TRUE,0,matrix_mem_size,hostMatrix2,0,NULL,NULL);
+    clEnqueueReadBuffer(queue,device_b,CL_TRUE,0,matrix_mem_size,hostMatrix,0,NULL,NULL);
 
-    free(hostMatrix);
-    hostMatrix = hostMatrix2;
+    //free(hostMatrix);
+    //hostMatrix = hostMatrix2;
 
 
     //
