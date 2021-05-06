@@ -51,9 +51,7 @@ int main( int argc, char **argv )
     cl_command_queue queue = clCreateCommandQueue( context, device, 0, &status );
 
     // Allocate memory for the matrix.
-    unsigned int matrix_mem_size = sizeof(float) * nRows * nCols;
-    float *hostMatrix = (float*) malloc( matrix_mem_size );
-    float *hostMatrix2 = (float*) malloc( matrix_mem_size );
+    float *hostMatrix = (float*) malloc( nRows*nCols*sizeof(float) );
 
     // Fill the matrix with random values, and display.
     fillMatrix( hostMatrix, nRows, nCols );
@@ -64,32 +62,40 @@ int main( int argc, char **argv )
     //
     // Transpose the matrix on the GPU.
     //
-    cl_mem device_a = clCreateBuffer(context,CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR, matrix_mem_size, hostMatrix ,&status);
-    cl_mem device_b = clCreateBuffer(context,CL_MEM_WRITE_ONLY, matrix_mem_size, NULL, &status);
+    // Compile the Kernel to compute the transposition on the Device
+    cl_kernel kernel = compileKernelFromFile("cwk3.cl", "transposeMat", context, device);
 
-    cl_kernel kernel = compileKernelFromFile("cwk3.cl","transposeMat",context,device);
+    // Allocate global memory on the GPU and pass the host matrix to this global memory
+    cl_mem device_mat = clCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR,
+                                       nRows * nCols * sizeof(float), hostMatrix, &status);
 
+    // The transposed Matrix. We will be returning this data
+    cl_mem device_output = clCreateBuffer(context, CL_MEM_WRITE_ONLY, nCols*nRows*sizeof(float), NULL  , &status );
 
-    status = clSetKernelArg(kernel,0,sizeof(cl_mem),&device_a);
-    status = clSetKernelArg(kernel,1,sizeof(cl_mem),&device_b);
-    status = clSetKernelArg(kernel,2,sizeof(int),&nCols);
-    status = clSetKernelArg(kernel,3,sizeof(int),&nRows);
+    // Setting all the kernel arguments
+    status = clSetKernelArg(kernel, 0, sizeof(cl_mem), &device_mat);
+    status = clSetKernelArg(kernel, 1, sizeof(cl_mem), &device_output);
+    status = clSetKernelArg(kernel, 2, sizeof(int), &nRows);
+    status = clSetKernelArg(kernel, 3, sizeof(int), &nCols);
 
-    size_t global_work_size[2];
-    size_t local_work_size[2];
+    // Organising the NDRange for kernel
+    size_t globalSize[1];
+    globalSize[0] = nRows * nCols;
+    size_t workGroupSize[1];
+    workGroupSize[0] = 1;
 
-    global_work_size[0] = nRows;
-    global_work_size[1] = nCols;
+    // queuing NDrange
+    status = clEnqueueNDRangeKernel(queue, kernel, 1, NULL, globalSize, workGroupSize, 0, NULL, NULL);
 
-    local_work_size[0] = 8;
-    local_work_size[1] = 8;
+    // Send the result back to the Host
+    status = clEnqueueReadBuffer(queue, device_output, CL_TRUE, 0, nCols * nRows * sizeof(float), hostMatrix, 0, NULL, NULL);
 
-    status = clEnqueueNDRangeKernel(queue,kernel,2,NULL,global_work_size,NULL,0,NULL,NULL);
+    // clear up
+    clReleaseKernel(kernel);
+    clReleaseMemObject(device_mat);
+    clReleaseMemObject(device_output);
 
-    clEnqueueReadBuffer(queue,device_b,CL_TRUE,0,matrix_mem_size,hostMatrix,0,NULL,NULL);
-
-    //free(hostMatrix);
-    //hostMatrix = hostMatrix2;
+    // ...
 
 
     //
@@ -104,7 +110,6 @@ int main( int argc, char **argv )
     //
     // Release all resources.
     //
-    clReleaseKernel( kernel);
     clReleaseCommandQueue( queue   );
     clReleaseContext     ( context );
 
