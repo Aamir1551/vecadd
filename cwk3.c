@@ -84,8 +84,8 @@ int main( int argc, char **argv )
     globalSize[1] = nCols;
 
     size_t workGroupSize[2];
-    workGroupSize[0] = NULL;
-    workGroupSize[0] = NULL;
+    workGroupSize[0] = 8;
+    workGroupSize[1] = 8;
 
     // queuing NDrange
     status = clEnqueueNDRangeKernel(queue, kernel, 2, NULL, globalSize, NULL, 0, NULL, NULL);
