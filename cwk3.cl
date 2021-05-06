@@ -3,10 +3,10 @@ __kernel
 void transposeMat( __constant float *a, __global float *b,  int rows, int cols)
 {
 
-	int j = get_global_id(0) % col;
-	int i = (get_global_id(0) - j) / col;
+	//int j = get_global_id(0) % col;
+	//int i = (get_global_id(0) - j) / col;
 
-	b[j * row + i] = a[i * col + j];
+	//b[j * row + i] = a[i * col + j];
 
 
 	unsigned int x_pos = get_global_id(1);
